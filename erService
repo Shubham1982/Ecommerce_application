@@ -1,0 +1,35 @@
+[1mdiff --git a/src/main/java/com/youtube/jwt/sevice/UserService.java b/src/main/java/com/youtube/jwt/sevice/UserService.java[m
+[1mindex 639660f..34cb01f 100644[m
+[1m--- a/src/main/java/com/youtube/jwt/sevice/UserService.java[m
+[1m+++ b/src/main/java/com/youtube/jwt/sevice/UserService.java[m
+[36m@@ -23,6 +23,12 @@[m [mpublic class UserService {[m
+     @Autowired[m
+     private PasswordEncoder passwordEncoder;[m
+     public User registerNewUser(User user){[m
+[32m+[m[32m        Role role = roleDao.findById("User").get();[m
+[32m+[m
+[32m+[m[32m        Set <Role> roles = new HashSet<>();[m
+[32m+[m[32m        roles.add(role);[m
+[32m+[m[32m        user.setRole(roles);[m
+[32m+[m[32m        user.setUserPassword(getEncodedPassword(user.getUserPassword()));[m
+         return userDao.save(user);[m
+     }[m
+ [m
+[36m@@ -48,7 +54,7 @@[m [mpublic class UserService {[m
+         adminUser.setRole(adminRoles);[m
+         userDao.save(adminUser);[m
+ [m
+[31m-        User user = new User();[m
+[32m+[m[32m       /*User user = new User();[m
+         user.setUserFirstName("raj");[m
+         user.setUserLastName("sharma");[m
+         user.setUserName("raj123");[m
+[36m@@ -56,7 +62,7 @@[m [mpublic class UserService {[m
+         Set<Role> userRoles = new HashSet<>();[m
+         userRoles.add(userRole);[m
+         user.setRole(userRoles);[m
+[31m-        userDao.save(user);[m
+[32m+[m[32m        userDao.save(user);*/[m
+     }[m
+     public String getEncodedPassword(String password){[m
+         return passwordEncoder.encode(password);[m
