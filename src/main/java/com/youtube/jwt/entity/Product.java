@@ -1,10 +1,8 @@
 package com.youtube.jwt.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -16,6 +14,18 @@ public class Product {
     private String productDescription;
     private String productDiscountedPrice;
     private String productActualPrice;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "product_images",
+            joinColumns = {
+                    @JoinColumn(name = "proudct_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "image_id")
+            }
+    )
+    private Set<ImageModel> productImages;
 
     public Integer getProductId() {
         return productId;
@@ -55,5 +65,13 @@ public class Product {
 
     public void setProductActualPrice(String productActualPrice) {
         this.productActualPrice = productActualPrice;
+    }
+
+    public Set<ImageModel> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(Set<ImageModel> productImages) {
+        this.productImages = productImages;
     }
 }
