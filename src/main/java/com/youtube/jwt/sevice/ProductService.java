@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -25,4 +26,9 @@ public class ProductService {
         productDao.deleteById(productId);
         return "successfully deleted recorder: "+ productId;
     }
+    public Optional<Product> getProductDetailsById(Integer productId){
+        return productDao.findById  (productId);
+    }
+
+
 }

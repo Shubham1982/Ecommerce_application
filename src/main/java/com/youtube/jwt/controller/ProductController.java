@@ -6,6 +6,7 @@ import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.sevice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
 
     @PostMapping(value = {"/addNewProduct"},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Product addNewProduct(@RequestPart("product") String products, @RequestPart("file")MultipartFile[] file){
@@ -49,13 +51,21 @@ public class ProductController {
         }
         return imageModels;
     }
+    @PreAuthorize("hasRole('Admin')")
     @GetMapping({"/getAllProducts"})
     public List<Product> getAllProducts(){
         return productService.getAllProducts();
     }
 
+    @PreAuthorize("hasRole('Admin')")
     @DeleteMapping({"/deleteProductDetails/{productId}"})
     public String deleteProductDetails(@PathVariable("productId")Integer productId){
         return productService.deleteProductDetails(productId);
+    }
+
+    @PreAuthorize("hasRole('Admin')")
+    @GetMapping({"/getProductDetailsById/{productId}"})
+    public Product getProductDetailsById(Integer productId){
+        return productService.getProductDetailsById(productId).get();
     }
 }

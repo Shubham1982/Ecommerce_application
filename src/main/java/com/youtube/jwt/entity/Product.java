@@ -11,9 +11,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer productId;
     private String productName;
+
+    @Column(length = 2000)
     private String productDescription;
-    private String productDiscountedPrice;
-    private String productActualPrice;
+    private Double productDiscountedPrice;
+    private Double productActualPrice;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -51,19 +53,19 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public String getProductDiscountedPrice() {
+    public Double getProductDiscountedPrice() {
         return productDiscountedPrice;
     }
 
-    public void setProductDiscountedPrice(String productDiscountedPrice) {
+    public void setProductDiscountedPrice(Double productDiscountedPrice) {
         this.productDiscountedPrice = productDiscountedPrice;
     }
 
-    public String getProductActualPrice() {
+    public Double getProductActualPrice() {
         return productActualPrice;
     }
 
-    public void setProductActualPrice(String productActualPrice) {
+    public void setProductActualPrice(Double productActualPrice) {
         this.productActualPrice = productActualPrice;
     }
 
