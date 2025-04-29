@@ -5,6 +5,8 @@ import com.youtube.jwt.entity.ImageModel;
 import com.youtube.jwt.entity.Product;
 import com.youtube.jwt.sevice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +55,9 @@ public class ProductController {
     }
     @PreAuthorize("hasRole('Admin')")
     @GetMapping({"/getAllProducts"})
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public List<Product> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,
+                                        @RequestParam(defaultValue = "") String searchKey){
+        return productService.getAllProducts(pageNumber,searchKey);
     }
 
     @PreAuthorize("hasRole('Admin')")
@@ -68,4 +71,12 @@ public class ProductController {
     public Product getProductDetailsById(Integer productId){
         return productService.getProductDetailsById(productId).get();
     }
+
+    @PreAuthorize("hasRole('User')")
+    @GetMapping({"/getProductSingleProduct/{isSingleProductCheckout/{productId}"})
+    public List<Product> getProductDetailsById(boolean isSingleProductCheckout, Integer productId){
+        return productService.getProudctDetails(isSingleProductCheckout,productId);
+    }
+
+
 }

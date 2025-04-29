@@ -22,13 +22,14 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     public User registerNewUser(User user){
         Role role = roleDao.findById("User").get();
-
-        Set <Role> roles = new HashSet<>();
-        roles.add(role);
-        user.setRole(roles);
-        user.setUserPassword(getEncodedPassword(user.getUserPassword()));
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role);
+        String password = getEncodedPassword(user.getUserPassword());
+        user.setUserPassword(password);
+        user.setRole(roleSet);
         return userDao.save(user);
     }
 
