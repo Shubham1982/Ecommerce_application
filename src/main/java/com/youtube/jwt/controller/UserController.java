@@ -1,7 +1,11 @@
 package com.youtube.jwt.controller;
 
+import com.youtube.jwt.configuration.JwtRequestFilter;
+import com.youtube.jwt.dao.RoleDao;
+import com.youtube.jwt.entity.Role;
 import com.youtube.jwt.entity.User;
 import com.youtube.jwt.sevice.UserService;
+import com.youtube.jwt.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
     @PostConstruct
     public void initRolesAndUsers(){
@@ -23,10 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/registerNewUser")
-    public User registerNewUser(@RequestBody User user){
+    public User registerNewUser(@RequestBody User user) {
         return userService.registerNewUser(user);
     }
-
     @GetMapping({"/forAdmin"})
     @PreAuthorize("hasRole('Admin')")
     public String forAdmin(){
