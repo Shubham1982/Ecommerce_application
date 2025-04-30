@@ -7,6 +7,7 @@ import com.youtube.jwt.sevice.OrderDetailService;
 import com.youtube.jwt.sevice.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +21,9 @@ public class OrdersDetailController {
     private OrderDetailService orderDetailService;
 
     @PreAuthorize("hasRole('User')")
-    @PostMapping({"/placeOrder"})
-    public List<OrderDetail> placeOrder(@RequestBody OrderInput orderInput){
-        return orderDetailService.placeOrder(orderInput);
+    @PostMapping({"/placeOrder/{isCartCheckout}"})
+    public List<OrderDetail> placeOrder(@PathVariable(name = "isSingleProductCheckout") boolean isSingleProductCheckout,
+                                        @RequestBody OrderInput orderInput){
+        return orderDetailService.placeOrder(orderInput,isSingleProductCheckout);
     }
 }
