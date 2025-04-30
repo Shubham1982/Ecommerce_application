@@ -9,6 +9,7 @@ import com.youtube.jwt.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class OrderDetailService {
     private UserDao userDao;
     @Autowired
     private CartDao cartDao;
+    @Autowired
+    private CartService cartService;
+
 
     public List<OrderDetail> placeOrder(OrderInput orderInput, boolean isSingleProductCheckout){
         List<OrderProductQuantity> productQuantityList = orderInput.getOrderProductQuantityList();
@@ -55,5 +59,32 @@ public class OrderDetailService {
         }
         return orderDetailList;
 
+    }
+    public List<OrderDetail> getOrderDetails(){
+        User user = cartService.getCurrentUser();
+        return orderDetailDao.findByUser(user);
+    }
+    public List<OrderDetail> getAllOrderDetails(String status){
+        List<OrderDetail> orderDetailList = new ArrayList<>();
+        if(status.equals("all")){
+            orderDetailDao.findAll().forEach(x->orderDetailList.add(x));
+        }
+        else{
+            orderDetailDao.findByOrderStatus(status).forEach(x -> orderDetailList.add(x));
+        }
+        return orderDetailList;
+    }
+    public String markOrderAsDelivered(Integer orderId) {
+        OrderDetail orderDetail = orderDetailDao.findById(orderId).get();
+        try {
+            if (orderDetail != null) {
+                orderDetail.setOrderStatus("Delivered");
+                orderDetailDao.save(orderDetail);
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return "Order marked as Delivered";
     }
 }

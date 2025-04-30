@@ -18,6 +18,9 @@ public class OrderDetail {
     private Product product;
     @OneToOne
     private User user;
+    public OrderDetail(){
+
+    }
 
     public OrderDetail(String orderFullName, String orderFullAddress, String orderContactNumber, String orderAlternateContactNumber, String orderStatus, Double orderAmount, Product product, User user) {
         this.orderFullName = orderFullName;
@@ -44,9 +47,6 @@ public class OrderDetail {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public OrderDetail() {
     }
 
     public Integer getOrderId() {

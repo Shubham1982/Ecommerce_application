@@ -32,7 +32,7 @@ public class JwtService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     public JwtResponse createJwtToken(JwtRequest jwtRequest) throws Exception {
-        String userName = jwtRequest.getUserName();
+        String userName = jwtRequest.getUserName().toLowerCase();
         String userPassword = jwtRequest.getUserPassword();
         authenticate(userName, userPassword);
 
